@@ -1,0 +1,2 @@
+[env]
+CARGO_ENV_RUN_TEST = "IT WORKS"
