@@ -1,8 +1,9 @@
 use {
     anyhow::{anyhow, Result},
     clap::Parser,
-    indexmap::IndexMap,
+    indexmap::{IndexMap, IndexSet},
     serde::Deserialize,
+    std::path::PathBuf,
 };
 
 #[derive(Parser)]
@@ -30,20 +31,28 @@ fn main() -> Result<()> {
     }
 
     let mut env = IndexMap::<String, String>::new();
+    let mut files = IndexSet::<PathBuf>::new();
     let mut dir = std::env::current_dir().unwrap();
     loop {
-        let file = dir.join(".cargo/config.toml");
-        if file.exists() {
-            let content = std::fs::read_to_string(&file)?;
-            let mut data: CargoConfigToml = toml::from_str(&content)?;
-            env.append(&mut data.env);
-        }
+        files.insert(dir.join(".cargo/config.toml"));
 
         if let Some(p) = dir.parent() {
             dir = p.to_path_buf();
         } else {
             break;
         }
+    }
+    let home_config = directories::UserDirs::new()
+        .unwrap()
+        .home_dir()
+        .join(".cargo/config.toml");
+    if !files.contains(&home_config) {
+        files.insert(home_config);
+    }
+    for file in files.iter().rev().filter(|x| x.exists()) {
+        let content = std::fs::read_to_string(file)?;
+        let mut data: CargoConfigToml = toml::from_str(&content)?;
+        env.append(&mut data.env);
     }
 
     let (prog, args) = (&cli.command[0], &cli.command[1..]);
