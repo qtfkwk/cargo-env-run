@@ -1,13 +1,22 @@
 use {
     anyhow::{anyhow, Result},
-    clap::Parser,
+    clap::{builder::Styles, Parser},
     indexmap::{IndexMap, IndexSet},
     serde::Deserialize,
     std::path::PathBuf,
 };
 
+const STYLES: Styles = Styles::styled()
+    .header(clap_cargo::style::HEADER)
+    .usage(clap_cargo::style::USAGE)
+    .literal(clap_cargo::style::LITERAL)
+    .placeholder(clap_cargo::style::PLACEHOLDER)
+    .error(clap_cargo::style::ERROR)
+    .valid(clap_cargo::style::VALID)
+    .invalid(clap_cargo::style::INVALID);
+
 #[derive(Parser)]
-#[command(name = "cargo", bin_name = "cargo")]
+#[command(name = "cargo", bin_name = "cargo", styles = STYLES)]
 enum Cli {
     EnvRun(EnvRun),
 }
@@ -20,7 +29,7 @@ struct EnvRun {
 
 #[derive(Deserialize)]
 struct CargoConfigToml {
-    env: IndexMap<String, String>,
+    env: Option<IndexMap<String, String>>,
 }
 
 fn main() -> Result<()> {
@@ -52,7 +61,9 @@ fn main() -> Result<()> {
     for file in files.iter().rev().filter(|x| x.exists()) {
         let content = std::fs::read_to_string(file)?;
         let mut data: CargoConfigToml = toml::from_str(&content)?;
-        env.append(&mut data.env);
+        if let Some(mut d) = data.env.take() {
+            env.append(&mut d);
+        }
     }
 
     let (prog, args) = (&cli.command[0], &cli.command[1..]);
