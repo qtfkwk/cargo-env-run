@@ -5,4 +5,5 @@
 * 0.3.0 (2024-10-26): Add clap color; fix issue if a `.cargo/config.toml` exists but is missing an `env` section; update dependencies
     0.3.1 (2024-12-04): Update dependencies
     0.3.2 (2025-02-21): Update dependencies
+    0.3.3 (2025-04-16): Update dependencies
 
