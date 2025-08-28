@@ -1,6 +1,6 @@
 use {
-    anyhow::{anyhow, Result},
-    clap::{builder::Styles, Parser},
+    anyhow::{Result, anyhow},
+    clap::{Parser, builder::Styles},
     indexmap::{IndexMap, IndexSet},
     serde::Deserialize,
     std::path::PathBuf,
