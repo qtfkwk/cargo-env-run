@@ -8,4 +8,5 @@
     * 0.3.3 (2025-04-16): Update dependencies
 * 0.4.0 (2025-08-28): Update dependencies; 2024 edition; fix changelog
     * 0.4.1 (2025-10-27): Update dependencies
+    * 0.4.2 (2025-11-12): Update dependencies; use [`clap-cargo`] `CLAP_STYLING`
 
