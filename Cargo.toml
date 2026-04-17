@@ -1,6 +1,6 @@
 [package]
 name = "cargo-env-run"
-version = "0.4.4"
+version = "0.4.5"
 edition = "2024"
 description = "Like dotenv but with `.cargo/config.toml` files"
 repository = "https://github.com/qtfkwk/cargo-env-run"
@@ -8,9 +8,9 @@ license = "MIT"
 
 [dependencies]
 anyhow = "1.0.102"
-clap = { version = "4.5.60", features = ["derive", "wrap_help"] }
+clap = { version = "4.6.1", features = ["derive", "wrap_help"] }
 clap-cargo = "0.18.3"
 directories = "6.0.0"
-indexmap = { version = "2.13.0", features = ["serde"] }
+indexmap = { version = "2.14.0", features = ["serde"] }
 serde = { version = "1.0.228", features = ["derive"] }
-toml = { version = "1.0.3", features = ["parse"] }
+toml = { version = "1.1.2", features = ["parse"] }
